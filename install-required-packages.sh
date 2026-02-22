@@ -69,7 +69,7 @@ while true; do
     fi
 done
 
-#copy the template configuration files to the necessary directories
+# copy the template configuration files to the necessary directories
 echo "Copying template configuration files to proper locations"
 sudo cp supporting-files/usr/local/etc/rmsgw/channels.xml /usr/local/etc/rmsgw/
 sudo cp supporting-files/usr/local/etc/rmsgw/banner /usr/local/etc/rmsgw/
@@ -77,7 +77,7 @@ sudo cp supporting-files/usr/local/etc/rmsgw/gateway.conf /usr/local/etc/rmsgw/
 sudo cp supporting-files/usr/local/etc/rmsgw/sysop.xml /usr/local/etc/rmsgw/
 cp supporting-files/home/pi/direwolf.winlink.conf ~/
 
-#copy start and stop scripts to /usr/local/bin
+# copy start and stop scripts to /usr/local/bin
 sudo cp supporting-file/usr/local/bin/start.direwolf.winlink.sh /usr/local/bin
 sudo chmod +x /usr/local/bin/start.direwolf.winlink.sh
 sudo cp supporting-file/usr/local/bin/stop.direwolf.winlink.sh /usr/local/bin
@@ -85,11 +85,14 @@ sudo chmod +x /usr/local/bin/stop.direwolf.winlink.sh
 sudo cp supporting-file/usr/local/bin/start.rmsgw.winlink.sh /usr/local/bin
 sudo chmod +x /usr/local/bin/start.rmsgw.winlink.sh
 
-#copy systemd service file to /etc/systemd/service
+# copy systemd service file to /etc/systemd/service
 sudo cp supporting-files/etc/systemd/system/winlinkdw.service /etc/systemd/system
 #enable the winlinkdw.service
 sudo systemctl enable winlinkdw.service
 
+# copy supporting ax25 configuration files to /etc/ax25
+sudo cp supporting-files/etc/ax25/axports /etc/ax25
+sudo cp supporting-files/etc/ax25/ax25d.conf /etc/ax25
 
 # Modify configuration files with the recieve information
 echo "Updating banner"
@@ -130,7 +133,19 @@ sudo sed -i \
 -e "s|<Email></Email>|<Email>${EMAIL_ADDRESS}</Email>|" \
 "$SYSOP_FILE"
 
-# Add direwolf configuration here
+# Update ax25 configuration here
+echo "Updating ax25d.conf and axports with user's callsign"
+AX25PORTS_FILE=/etc/ax25/axports
+AX25DCONF_FILE=/etc/ax25/ax25d.conf
+sudo sed -i \
+-e "s|N0CALL-10|${CALLSIGN}-10|" \
+"$AX25PORTS_FILE"
+
+sudo sed -i \
+-e "s|N0CALL-10|${CALLSIGN}-10|" \
+"$AX25DCONF_FILE"
+
+# Update direwolf configuration here
 echo "Updating direwolf.winlink.conf"
 DIREWOLF_CONF_FILE="/home/pi/direwolf.winlink.conf"
 sudo sed -i \
