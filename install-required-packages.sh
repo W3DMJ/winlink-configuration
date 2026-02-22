@@ -79,11 +79,11 @@ sudo cp ~/winlink-configuration/supporting-files/usr/local/etc/rmsgw/sysop.xml /
 cp ~/winlink-configuration/supporting-files/home/pi/direwolf.winlink.conf ~/
 
 # copy start and stop scripts to /usr/local/bin
-sudo cp ~/winlink-configuration/supporting-file/usr/local/bin/start.direwolf.winlink.sh /usr/local/bin
+sudo cp ~/winlink-configuration/supporting-files/usr/local/bin/start.direwolf.winlink.sh /usr/local/bin
 sudo chmod +x /usr/local/bin/start.direwolf.winlink.sh
-sudo cp ~/winlink-configuration/supporting-file/usr/local/bin/stop.direwolf.winlink.sh /usr/local/bin
+sudo cp ~/winlink-configuration/supporting-files/usr/local/bin/stop.direwolf.winlink.sh /usr/local/bin
 sudo chmod +x /usr/local/bin/stop.direwolf.winlink.sh
-sudo cp ~/winlink-configuration/supporting-file/usr/local/bin/start.rmsgw.winlink.sh /usr/local/bin
+sudo cp ~/winlink-configuration/supporting-files/usr/local/bin/start.rmsgw.winlink.sh /usr/local/bin
 sudo chmod +x /usr/local/bin/start.rmsgw.winlink.sh
 
 # copy systemd service file to /etc/systemd/service
