@@ -1,5 +1,6 @@
 # winlink-configuration
 Turn a Linux installation into a Winlink RMS Gateway
+This has been developed and tested on Raspberry Pi4 and a Raspberry Pi Zero 2 W
 
 Currently this configuration requires the username to be: pi
 
@@ -25,3 +26,6 @@ will then complete the configuration and once complete will prompt you to type '
 
 Once the Raspberry Pi has rebooted the Winlink RMS Gateway should be ready to accepts connection
 if there is a radio connected. This configuration assumes one has connected a radio via a DigiRig Mobile.
+
+# Furture Work
+Use the $USER variable to update scripts during configuration to remove requirement for the pi username.
