@@ -43,6 +43,9 @@ make -j2
 sudo make install
 clear
 
+echo "Creating symbolic link /etc/rmsgw to point to /usr/local/etc/rmsgw"
+sudo ln -s /usr/local/etc/rmsgw /etc/rmsgw
+
 # Get User to answer some basic questions
 echo "In order to properly configure this Winlink Gateway please provide answers to the following questions:"
 read -rp "Enter your callsign (e.g., NOCALL): " CALLSIGN
@@ -68,7 +71,24 @@ done
 
 #copy the template configuration files to the necessary directories
 echo "Copying template configuration files to proper locations"
-sudo cp supporting-files/usr/local/etc/rmsgw
+sudo cp supporting-files/usr/local/etc/rmsgw/channels.xml /usr/local/etc/rmsgw/
+sudo cp supporting-files/usr/local/etc/rmsgw/banner /usr/local/etc/rmsgw/
+sudo cp supporting-files/usr/local/etc/rmsgw/gateway.conf /usr/local/etc/rmsgw/
+sudo cp supporting-files/usr/local/etc/rmsgw/sysop.xml /usr/local/etc/rmsgw/
+cp supporting-files/home/pi/direwolf.winlink.conf ~/
+
+#copy start and stop scripts to /usr/local/bin
+sudo cp supporting-file/usr/local/bin/start.direwolf.winlink.sh /usr/local/bin
+sudo chmod +x /usr/local/bin/start.direwolf.winlink.sh
+sudo cp supporting-file/usr/local/bin/stop.direwolf.winlink.sh /usr/local/bin
+sudo chmod +x /usr/local/bin/stop.direwolf.winlink.sh
+sudo cp supporting-file/usr/local/bin/start.rmsgw.winlink.sh /usr/local/bin
+sudo chmod +x /usr/local/bin/start.rmsgw.winlink.sh
+
+#copy systemd service file to /etc/systemd/service
+sudo cp supporting-files/etc/systemd/system/winlinkdw.service /etc/systemd/system
+#enable the winlinkdw.service
+sudo systemctl enable winlinkdw.service
 
 
 # Modify configuration files with the recieve information
@@ -94,7 +114,7 @@ sudo sed -i \
 echo "Updating gateway.conf"
 GATEWAY_FILE="/usr/local/etc/rmsgw/gateway.conf"
 sudo sed -i \
--e "s/N0CALL/$CALLSIGN/g" \
+-e "s/N0CALL/"${CALLSIGN}-10"/g" \
 -e "s/AA00aa/$GRIDSQUARE/g" \
 "$GATEWAY_FILE"
 
@@ -110,10 +130,14 @@ sudo sed -i \
 -e "s|<Email></Email>|<Email>${EMAIL_ADDRESS}</Email>|" \
 "$SYSOP_FILE"
 
-# TODO: Add direwolf configuration here
+# Add direwolf configuration here
+echo "Updating direwolf.winlink.conf"
+DIREWOLF_CONF_FILE="/home/pi/direwolf.winlink.conf"
+sudo sed -i \
+-e "s|N0CALL|${CALLSIGN}|" \
+"$DIREWOLF_CONF_FILE"
 
 echo "Installing RMS Gateway status cron job..."
-
 # Create the status update script
 sudo tee /usr/local/bin/rmsgw-status-update.sh >/dev/null <<EOF
 #!/bin/bash
@@ -125,8 +149,10 @@ sudo chmod +x /usr/local/bin/rmsgw-status-update.sh
 
 # Install cron job: run at boot AND every 20 minutes
 sudo tee /etc/cron.d/rmsgw-status-update >/dev/null <<EOF
-@reboot root /usr/local/bin/rmsgw-status-update.sh
 */20 * * * * root /usr/local/bin/rmsgw-status-update.sh
 EOF
 
 sudo chmod 644 /etc/cron.d/rmsgw-status-update
+clear
+echo "Setup is complete."
+echo "type \"sudo reboot\" to reboot the computer."

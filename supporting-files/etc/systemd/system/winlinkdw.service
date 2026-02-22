@@ -1,0 +1,18 @@
+[Unit]
+Description=winlinkdw
+After=network.target sound.target
+ 
+[Service]
+Type=simple
+User=pi
+ExecStart=/usr/local/bin/start.direwolf.winlink.sh
+ExecStartPost=/bin/bash -c "/bin/sleep 5; /usr/local/bin/start.rmsgw.winlink.sh"
+ExecStop=/usr/local/bin/stop.direwolf.winlink.sh
+WorkingDirectory=/home/pi
+StandardOutput=inherit
+StandardError=inherit
+Restart=no
+
+[Install]
+WantedBy=multi-user.target
+
