@@ -36,7 +36,6 @@ make install-conf
 echo "Installing packages required for RMSGW functionality"
 sudo apt install xutils-dev libxml2 libxml2-dev libncurses5-dev python3-all python3-pip python3-venv python3-setuptools python3-requests autoconf -y
 cd ~/Source/repos/amateur-radio-projects/rmsgw
-git checkout fix-compile-errors
 ./autogen.sh
 ./configure
 make -j2
