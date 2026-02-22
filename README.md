@@ -5,9 +5,7 @@ Currently this configuration requires the username to be: pi
 
 # Pre-Installation
 Login to the Raspberry Pi using the username pi
-type: 'sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y' press enter
-once that is complete
-type: 'sudo apt install git' then press enter
+type: 'sudo apt update && apt install git -y' press enter
 
 The installation script will take care of the reset of the packages.
 
