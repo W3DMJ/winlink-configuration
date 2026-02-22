@@ -45,6 +45,7 @@ clear
 
 echo "Creating symbolic link /etc/rmsgw to point to /usr/local/etc/rmsgw"
 sudo ln -s /usr/local/etc/rmsgw /etc/rmsgw
+cd ~/winlink-configuration
 
 # Get User to answer some basic questions
 echo "In order to properly configure this Winlink Gateway please provide answers to the following questions:"
