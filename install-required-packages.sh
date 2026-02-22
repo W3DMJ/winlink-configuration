@@ -168,6 +168,6 @@ sudo tee /etc/cron.d/rmsgw-status-update >/dev/null <<EOF
 EOF
 
 sudo chmod 644 /etc/cron.d/rmsgw-status-update
-clear
+# clear
 echo "Setup is complete."
 echo "type \"sudo reboot\" to reboot the computer."
