@@ -75,7 +75,7 @@ sudo cp ~/winlink-configuration/supporting-files/usr/local/etc/rmsgw/channels.xm
 sudo cp ~/winlink-configuration/supporting-files/usr/local/etc/rmsgw/banner /usr/local/etc/rmsgw/
 sudo cp ~/winlink-configuration/supporting-files/usr/local/etc/rmsgw/gateway.conf /usr/local/etc/rmsgw/
 sudo cp ~/winlink-configuration/supporting-files/usr/local/etc/rmsgw/sysop.xml /usr/local/etc/rmsgw/
-cp ~/winlink-configuration/supporting-files/home/pi/direwolf.winlink.conf ~/
+cp ~/winlink-configuration/supporting-files/home/direwolf.winlink.conf ~/
 
 # copy start and stop scripts to /usr/local/bin
 sudo cp ~/winlink-configuration/supporting-files/usr/local/bin/start.direwolf.winlink.sh /usr/local/bin
@@ -147,7 +147,7 @@ sudo sed -i \
 
 # Update direwolf configuration here
 echo "Updating direwolf.winlink.conf"
-DIREWOLF_CONF_FILE="/home/pi/direwolf.winlink.conf"
+DIREWOLF_CONF_FILE="/home/${USER}/direwolf.winlink.conf"
 sudo sed -i \
 -e "s|N0CALL|${CALLSIGN}|" \
 "$DIREWOLF_CONF_FILE"
