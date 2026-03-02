@@ -26,6 +26,3 @@ will then complete the configuration and once complete will prompt you to type '
 
 Once the Raspberry Pi has rebooted the Winlink RMS Gateway should be ready to accepts connection
 if there is a radio connected. This configuration assumes one has connected a radio via a DigiRig Mobile.
-
-# Future Work
-Use the $USER variable to update scripts during configuration to remove requirement for the pi username.
