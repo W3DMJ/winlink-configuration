@@ -26,3 +26,15 @@ will then complete the configuration and once complete will prompt you to type '
 
 Once the Raspberry Pi has rebooted the Winlink RMS Gateway should be ready to accepts connection
 if there is a radio connected. This configuration assumes one has connected a radio via a DigiRig Mobile.
+
+# CRONTAB
+if the job in the scipt does not work, open a terminal and type 'sudo crontab -e' the press enter. Copy and paste the following line into the editor:
+
+*/20 * * * * root /usr/local/bin/rmsgw-status-update.sh
+
+The above line will cause the following to occur every 20 minutes:
+/usr/local/bin/rmsgw_aci
+/etc/rmsgw/updatesysop.py
+/etc/rmsgw/updatechannel.py
+
+Running these commands should keep your node in the RMS List and on the RMS Map.
