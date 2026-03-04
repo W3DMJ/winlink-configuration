@@ -84,6 +84,8 @@ sudo cp ~/winlink-configuration/supporting-files/usr/local/bin/stop.direwolf.win
 sudo chmod +x /usr/local/bin/stop.direwolf.winlink.sh
 sudo cp ~/winlink-configuration/supporting-files/usr/local/bin/start.rmsgw.winlink.sh /usr/local/bin
 sudo chmod +x /usr/local/bin/start.rmsgw.winlink.sh
+sudo cp ~/winlink-configuration/supporting-files/usr/local/bin/rmsgw-status-update.sh  /usr/local/bin
+sudo chmod +x /usr/local/bin/rmsgw-status-update.sh 
 
 # copy systemd service file to /etc/systemd/service
 sudo cp ~/winlink-configuration/supporting-files/etc/systemd/system/winlinkdw.service /etc/systemd/system
@@ -153,15 +155,6 @@ sudo sed -i \
 "$DIREWOLF_CONF_FILE"
 
 echo "Installing RMS Gateway status cron job..."
-# Create the status update script
-sudo tee /usr/local/bin/rmsgw-status-update.sh >/dev/null <<EOF
-#!/bin/bash
-/usr/local/bin/rmsgw_aci
-/etc/rmsgw/updatesysop.py
-EOF
-
-sudo chmod +x /usr/local/bin/rmsgw-status-update.sh
-
 # Install cron job: run at boot AND every 20 minutes
 sudo tee /etc/cron.d/rmsgw-status-update >/dev/null <<EOF
 */20 * * * * root /usr/local/bin/rmsgw-status-update.sh
