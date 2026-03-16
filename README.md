@@ -37,4 +37,8 @@ The above line will cause the following to occur every 20 minutes:
 /etc/rmsgw/updatesysop.py
 /etc/rmsgw/updatechannel.py
 
-Running these commands should keep your node in the RMS List and on the RMS Map.
+if the node remains listed but when connection attempts are made and the node does not answer, open a terminal and type 'sudo crontab -e' the press enter. Copy and paste the following line into the editor:
+
+0 */3 * * * /usr/bin/systemctl restart winlinkrms.service
+
+Running these commands should keep your node in the RMS List and on the RMS Map and responding to connection attempts.
