@@ -71,30 +71,43 @@ done
 
 # copy the template configuration files to the necessary directories
 echo "Copying template configuration files to proper locations"
-sudo cp ~/winlink-configuration/supporting-files/usr/local/etc/rmsgw/channels.xml /usr/local/etc/rmsgw/
-sudo cp ~/winlink-configuration/supporting-files/usr/local/etc/rmsgw/banner /usr/local/etc/rmsgw/
-sudo cp ~/winlink-configuration/supporting-files/usr/local/etc/rmsgw/gateway.conf /usr/local/etc/rmsgw/
-sudo cp ~/winlink-configuration/supporting-files/usr/local/etc/rmsgw/sysop.xml /usr/local/etc/rmsgw/
-cp ~/winlink-configuration/supporting-files/home/direwolf.winlink.conf ~/
+sudo cp $PWD/supporting-files/usr/local/etc/rmsgw/channels.xml /usr/local/etc/rmsgw/
+sudo cp $PWD/supporting-files/usr/local/etc/rmsgw/banner /usr/local/etc/rmsgw/
+sudo cp $PWD/supporting-files/usr/local/etc/rmsgw/gateway.conf /usr/local/etc/rmsgw/
+sudo cp $PWD/supporting-files/usr/local/etc/rmsgw/sysop.xml /usr/local/etc/rmsgw/
+cp $PWD/supporting-files/home/direwolf.winlink.conf ~/
 
 # copy start and stop scripts to /usr/local/bin
-sudo cp ~/winlink-configuration/supporting-files/usr/local/bin/start.direwolf.winlink.sh /usr/local/bin
+sudo sed -i \
+-e "s/pi/$USER/g" \
+"$PWD/supporting-files/usr/local/bin/start.direwolf.winlink.sh"
+#exec direwolf -d t -d o -p -q d -t 0 -c /run/direwolf.winlink.conf |& grep --line-buffered -v PTT_METHOD > /home/pi/direwolf.log 
+
+
+sudo cp $PWD/supporting-files/usr/local/bin/start.direwolf.winlink.sh /usr/local/bin
 sudo chmod +x /usr/local/bin/start.direwolf.winlink.sh
-sudo cp ~/winlink-configuration/supporting-files/usr/local/bin/stop.direwolf.winlink.sh /usr/local/bin
+sudo cp $PWD/supporting-files/usr/local/bin/stop.direwolf.winlink.sh /usr/local/bin
 sudo chmod +x /usr/local/bin/stop.direwolf.winlink.sh
-sudo cp ~/winlink-configuration/supporting-files/usr/local/bin/start.rmsgw.winlink.sh /usr/local/bin
+sudo cp $PWD/supporting-files/usr/local/bin/start.rmsgw.winlink.sh /usr/local/bin
 sudo chmod +x /usr/local/bin/start.rmsgw.winlink.sh
-sudo cp ~/winlink-configuration/supporting-files/usr/local/bin/rmsgw-status-update.sh  /usr/local/bin
+sudo cp $PWD/supporting-files/usr/local/bin/rmsgw-status-update.sh  /usr/local/bin
 sudo chmod +x /usr/local/bin/rmsgw-status-update.sh 
 
+# update user to this user installing the service
+sudo sed -i \
+-e "s/pi/$USER/g" \
+"$PWD/supporting-files/etc/systemd/system/winlinkdw.service"
+
 # copy systemd service file to /etc/systemd/service
-sudo cp ~/winlink-configuration/supporting-files/etc/systemd/system/winlinkdw.service /etc/systemd/system
+sudo cp $PWD/supporting-files/etc/systemd/system/winlinkdw.service /etc/systemd/system
+
 #enable the winlinkdw.service
 sudo systemctl enable winlinkdw.service
 
+
 # copy supporting ax25 configuration files to /etc/ax25
-sudo cp ~/winlink-configuration/supporting-files/etc/ax25/axports /etc/ax25
-sudo cp ~/winlink-configuration/supporting-files/etc/ax25/ax25d.conf /etc/ax25
+sudo cp $PWD/supporting-files/etc/ax25/axports /etc/ax25
+sudo cp $PWD/supporting-files/etc/ax25/ax25d.conf /etc/ax25
 
 # Modify configuration files with the recieve information
 echo "Updating banner"
@@ -108,7 +121,7 @@ sudo sed -i \
 echo "Updating channels.xml"
 CHANNEL_FILE="/usr/local/etc/rmsgw/channels.xml"
 sudo sed -i \
--e "s|<channel name="radio" type="ax25" active="yes">|<channel name="1" type="ax25" active="yes">|" \
+-e "s|<channel name="1" type="ax25" active="yes">|<channel name="radio" type="ax25" active="yes">|" \
 -e "s|<basecall>N0CALL</basecall>|<basecall>${CALLSIGN}</basecall>|" \
 -e "s|<callsign>N0CALL-10</callsign>|<callsign>${CALLSIGN}-10</callsign>|" \
 -e "s|<password>password</password>|<password>${SYSOP_PASSWORD}</password>|" \
@@ -141,6 +154,7 @@ AX25PORTS_FILE=/etc/ax25/axports
 AX25DCONF_FILE=/etc/ax25/ax25d.conf
 sudo sed -i \
 -e "s|N0CALL-10|${CALLSIGN}-10|" \
+-e "s/pi/$USER/g" \
 "$AX25PORTS_FILE"
 
 sudo sed -i \
