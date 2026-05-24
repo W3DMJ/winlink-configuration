@@ -4,7 +4,7 @@
   xsi:schemaLocation="file:///usr/local/etc/channels.xsd">
   <channel name="1" type="ax25" active="yes">
     <basecall>N0CALL</basecall>
-    <callsign>N0CALL-10</callsign>
+    <callsign>N0CALL-00</callsign>
     <password>password</password>
     <gridsquare>AA00AA</gridsquare>
     <frequency>144000000</frequency>

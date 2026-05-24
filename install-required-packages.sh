@@ -49,6 +49,7 @@ cd ~/winlink-configuration
 # Get User to answer some basic questions
 echo "In order to properly configure this Winlink Gateway please provide answers to the following questions:"
 read -rp "Enter your callsign (e.g., NOCALL): " CALLSIGN
+read -rp "Enter desired SSID for gateway: " SSID
 read -rp "Enter your city: " CITY
 read -rp "Enter your state (2‑letter): " STATE
 read -rp "Enter your zip code : " ZIPCODE
@@ -79,7 +80,7 @@ cp $PWD/supporting-files/home/direwolf.winlink.conf ~/
 
 # copy start and stop scripts to /usr/local/bin
 sudo sed -i \
--e "s/pi/$USER/g" \
+-e "s/NOUSER/${USER}/g" \
 "$PWD/supporting-files/usr/local/bin/start.direwolf.winlink.sh"
 #exec direwolf -d t -d o -p -q d -t 0 -c /run/direwolf.winlink.conf |& grep --line-buffered -v PTT_METHOD > /home/pi/direwolf.log 
 
@@ -95,7 +96,7 @@ sudo chmod +x /usr/local/bin/rmsgw-status-update.sh
 
 # update user to this user installing the service
 sudo sed -i \
--e "s/pi/$USER/g" \
+-e "s/NOUSER/${USER}/g" \
 "$PWD/supporting-files/etc/systemd/system/winlinkdw.service"
 
 # copy systemd service file to /etc/systemd/service
@@ -121,9 +122,9 @@ sudo sed -i \
 echo "Updating channels.xml"
 CHANNEL_FILE="/usr/local/etc/rmsgw/channels.xml"
 sudo sed -i \
--e "s|<channel name="1" type="ax25" active="yes">|<channel name="radio" type="ax25" active="yes">|" \
+-e "s|<channel name=\"1\" type=\"ax25\" active=\"yes\">|<channel name=\"radio\" type=\"ax25\" active=\"yes\">|" \
 -e "s|<basecall>N0CALL</basecall>|<basecall>${CALLSIGN}</basecall>|" \
--e "s|<callsign>N0CALL-10</callsign>|<callsign>${CALLSIGN}-10</callsign>|" \
+-e "s|<callsign>N0CALL-00</callsign>|<callsign>${CALLSIGN}-${SSID}</callsign>|" \
 -e "s|<password>password</password>|<password>${SYSOP_PASSWORD}</password>|" \
 -e "s|<gridsquare>AA00AA</gridsquare>|<gridsquare>${GRIDSQUARE}</gridsquare>|" \
 -e "s|<frequency>144000000</frequency>|<frequency>${FREQUENCY}</frequency>|" \
@@ -132,7 +133,7 @@ sudo sed -i \
 echo "Updating gateway.conf"
 GATEWAY_FILE="/usr/local/etc/rmsgw/gateway.conf"
 sudo sed -i \
--e "s/N0CALL/"${CALLSIGN}-10"/g" \
+-e "s/N0CALL-00/"${CALLSIGN}-${SSID}"/g" \
 -e "s/AA00aa/$GRIDSQUARE/g" \
 "$GATEWAY_FILE"
 
@@ -153,12 +154,12 @@ echo "Updating ax25d.conf and axports with user's callsign"
 AX25PORTS_FILE=/etc/ax25/axports
 AX25DCONF_FILE=/etc/ax25/ax25d.conf
 sudo sed -i \
--e "s|N0CALL-10|${CALLSIGN}-10|" \
--e "s/pi/$USER/g" \
+-e "s|N0CALL-00|${CALLSIGN}-${SSID}|" \
+-e "s/NOUSER/$USER/g" \
 "$AX25PORTS_FILE"
 
 sudo sed -i \
--e "s|N0CALL-10|${CALLSIGN}-10|" \
+-e "s|N0CALL-00|${CALLSIGN}-${SSID}|" \
 "$AX25DCONF_FILE"
 
 # Update direwolf configuration here

@@ -12,5 +12,5 @@ fi
 echo "ALSA_CARD:  $ALSA_CARD"
 
 # create a custom direwolf conf file, based on detected ptt method
-sudo cp /home/pi/direwolf.winlink.conf /run/direwolf.winlink.conf
-exec direwolf -d t -d o -p -q d -t 0 -c /run/direwolf.winlink.conf |& grep --line-buffered -v PTT_METHOD > /home/pi/direwolf.log 
+sudo cp /home/NOUSER/direwolf.winlink.conf /run/direwolf.winlink.conf
+exec direwolf -d t -d o -p -q d -t 0 -c /run/direwolf.winlink.conf |& grep --line-buffered -v PTT_METHOD > /home/NOUSER/direwolf.log 

@@ -4,11 +4,11 @@ After=network.target sound.target
  
 [Service]
 Type=simple
-User=pi
+User=NOUSER
 ExecStart=/usr/local/bin/start.direwolf.winlink.sh
 ExecStartPost=/bin/bash -c "/bin/sleep 5; /usr/local/bin/start.rmsgw.winlink.sh"
 ExecStop=/usr/local/bin/stop.direwolf.winlink.sh
-WorkingDirectory=/home/pi
+WorkingDirectory=/home/NOUSER
 StandardOutput=inherit
 StandardError=inherit
 Restart=no
