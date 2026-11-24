@@ -1,8 +1,48 @@
 # winlink-configuration
 Turn a Linux installation into a Winlink RMS Gateway
-This has been developed and tested on Raspberry Pi4 and a Raspberry Pi Zero 2 W
+This has been developed and tested on Raspberry Pi4 and a Raspberry Pi Zero 2 W but has been tested on an Orange Pi 5 Plus running Debian 13.8 for aarch64.
 
-Run the install script as the Linux account that should own the gateway. That account is written into the systemd service and ax25d configuration. The script calls sudo itself for the steps that need root.
+Run the install script as the Linux account that should own the gateway for example is the normal user is pi then login as pi. The account used to install will be written into the systemd service and ax25d configuration. 
+Do not execute the install script using sudo. The script will make calls sudo itself when needed for the steps that need root access.
+
+To keep from having difficulties later it is suggested that your password be something then the default ie "Raspberry" because the service will need the following:
+If running Raspberry Pi OS and not using default user such as pi run the following in a terminal:
+  'sudo usermod -aG sudo,dialout $USER'
+then add the following line edit in the sudoers file by running 'sudo visudo' look for:
+  "# Allow members of group sudo to execute any command
+   %sudo   ALL=(ALL:ALL) ALL"
+change to"
+  "# Allow members of group sudo to execute any command
+   %sudo   ALL=(ALL:ALL) NOPASSWD:ALL"
+
+Save and Exit file
+
+### REMINDER: YOUR PASSWORD SHOULD BE SOMETHING OTHER THAN 'raspberry'.
+### IT IS REQUIRED TO ALLOW INTERNET CONNECTIVITY BUT DO NOT EXPOSE TO 
+### CONNECTIONS ORIGINATING FROM BEYOND YOUR FIREWALL BY OPENING UP FIREWALL PORTS OR RUNNING
+### OTHER PUBLIC FACING SERVICES ON THIS DEVICE.
+
+For Debian other than Raspberry Pi OS you may need the following:
+Execute 'su' and enter root's password.
+Execute 'apt update && apt upgrade -y && apt autoremove -y'
+Execute 'apt install sudo git git-lfs vim cmake build-essential python3-all python3-pip python3-setuptools python3-venv'
+Execute 'usermod +aG sudo,dialout [YOUR USERNAME]'
+Execute 'visudo'
+
+Edit the following line edit in the sudoers file :
+  "# Allow members of group sudo to execute any command
+   %sudo   ALL=(ALL:ALL) ALL"
+change to"
+  "# Allow members of group sudo to execute any command
+   %sudo   ALL=(ALL:ALL) NOPASSWD:ALL"
+Save and Exit
+
+### REMINDER: YOUR PASSWORD SHOULD BE SOMETHING OTHER THAN 'raspberry'.
+### IT IS REQUIRED TO ALLOW INTERNET CONNECTIVITY BUT DO NOT EXPOSE TO 
+### CONNECTIONS ORIGINATING FROM BEYOND YOUR FIREWALL BY OPENING UP FIREWALL PORTS OR RUNNING
+### OTHER PUBLIC FACING SERVICES ON THIS DEVICE.
+
+For both cases a reboot may be required.
 
 # Pre-Installation
 Log in to the Raspberry Pi as that account.
