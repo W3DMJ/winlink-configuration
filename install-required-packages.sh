@@ -89,6 +89,7 @@ read -rp "Enter your zip code : " ZIPCODE
 read -rp "Enter your Maindenhead Grid Square (ex. AA00aa): " GRIDSQUARE
 read -rp "Enter your email address: " EMAIL_ADDRESS
 read -rp "Enter your node's frequency (ex. 144930000): " FREQUENCY
+read -rp "Enter the radio PTT serial device [/dev/ttyUSB0]: " RADIO_DEVICE
 
 while true; do
     read -rsp "Enter your Winlink SYSOP Password: " SYSOP_PASSWORD
@@ -113,6 +114,11 @@ ZIPCODE="$(trim "$ZIPCODE")"
 GRIDSQUARE="$(trim "$GRIDSQUARE")"
 EMAIL_ADDRESS="$(trim "$EMAIL_ADDRESS")"
 FREQUENCY="$(trim "$FREQUENCY")"
+RADIO_DEVICE="$(trim "$RADIO_DEVICE")"
+if [[ -z "$RADIO_DEVICE" ]]; then
+    RADIO_DEVICE="/dev/ttyUSB0"
+fi
+echo "Radio PTT serial device: ${RADIO_DEVICE}"
 CALLSIGN="${CALLSIGN^^}"
 STATE="${STATE^^}"
 
@@ -134,6 +140,7 @@ CITY_SED="$(sed_repl "$CITY")"
 STATE_SED="$(sed_repl "$STATE")"
 GRID_SED="$(sed_repl "$GRIDSQUARE")"
 FREQ_SED="$(sed_repl "$FREQUENCY")"
+RADIO_DEVICE_SED="$(sed_repl "$RADIO_DEVICE")"
 USER_SED="$(sed_repl "$USER")"
 CITY_XML_SED="$(sed_repl "$(xml_text "$CITY")")"
 STATE_XML_SED="$(sed_repl "$(xml_text "$STATE")")"
@@ -232,6 +239,7 @@ echo "Updating direwolf.winlink.conf"
 DIREWOLF_CONF_FILE="${HOME}/direwolf.winlink.conf"
 sed -i \
 -e "s|MYCALL N0CALL-00|MYCALL ${CALLSIGN_SED}-${SSID_SED}|" \
+-e "s|PTT /dev/ttyUSB0 RTS|PTT ${RADIO_DEVICE_SED} RTS|" \
 "$DIREWOLF_CONF_FILE"
 
 echo "Installing RMS Gateway status cron job..."
@@ -275,6 +283,9 @@ warn_if_present "$AX25PORTS_FILE" "N0CALL-00"
 warn_if_present "$AX25DCONF_FILE" "N0CALL-00"
 warn_if_present "$AX25DCONF_FILE" "NOUSER"
 warn_if_present "$DIREWOLF_CONF_FILE" "N0CALL"
+if [[ "$RADIO_DEVICE" != "/dev/ttyUSB0" ]]; then
+    warn_if_present "$DIREWOLF_CONF_FILE" "PTT /dev/ttyUSB0 RTS"
+fi
 
 if (( PLACEHOLDER_WARNINGS > 0 )); then
     echo "Setup finished with ${PLACEHOLDER_WARNINGS} placeholder warning(s). Review the files above before rebooting."
