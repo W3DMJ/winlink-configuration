@@ -42,7 +42,7 @@ sudo apt install git git-lfs build-essential cmake libasound2-dev libudev-dev li
 
 # Get packages required for AX.25
 echo "Installing packages required for AX.25 functionality"
-sudo apt install ax25-apps ax25-tools ax25-xtools libax25 -y
+sudo apt install ax25-apps ax25-tools ax25-xtools libax25 libax25-dev -y
 
 # Setting up build environment
 echo "Setting up build environment"
