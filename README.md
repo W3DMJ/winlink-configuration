@@ -1,6 +1,6 @@
 # Winlink Configuration Script
 Turn a Linux installation into a Winlink RMS Gateway
-This has been developed and tested on Raspberry Pi4 and a Raspberry Pi Zero 2 W but has been tested on an Orange Pi 5 Plus running Debian 13.8 for aarch64.
+This has been developed and tested on Raspberry Pi4, a Raspberry Pi Zero 2 W running Raspberry Pi OS and an Orange Pi 5 Plus running Debian 13.8 for aarch64.
 
 Run the install script as the Linux account that should own the gateway for example is the normal user is pi then login as pi. The account used to install will be written into the systemd service and ax25d configuration. 
 Do not execute the install script using sudo. The script will make calls sudo itself when needed for the steps that need root access.
