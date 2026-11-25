@@ -1,4 +1,4 @@
-# winlink-configuration
+# Winlink Configuration Script
 Turn a Linux installation into a Winlink RMS Gateway
 This has been developed and tested on Raspberry Pi4 and a Raspberry Pi Zero 2 W but has been tested on an Orange Pi 5 Plus running Debian 13.8 for aarch64.
 
